@@ -1,6 +1,10 @@
 'snipe' - snipe the most recent deleted message in the current channel
+
 'wordle' - start a wordle game, and use 'wordle harder' to use an extended answer pool
+'quordle' - start a quordle game, and use 'quordle harder' to use an extended answer pool
 
 'join' - join a vc
-'play' - play an audio file
+'play [query]' - play an audio file, with an optional query
 'stop' - stop audio
+
+'rsa [key] [exponent]' - try and manually crunch small keys

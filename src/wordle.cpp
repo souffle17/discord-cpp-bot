@@ -121,10 +121,10 @@ namespace wordle {
         }
         else {
             if (sub.length() == 5) {
-                return "Guess not in word list";
+                return ":x: Guess not in word list";
             }
             else {
-                return "Must be 5 letters";
+                return ":x: Must be 5 letters";
             }
         }
     }
@@ -281,10 +281,10 @@ namespace wordle {
         }
         else {
             if (sub.length() == 5) {
-                return "Guess not in word list";
+                return ":x: Guess not in word list";
             }
             else {
-                return "Must be 5 letters";
+                return ":x: Must be 5 letters";
             }
         }
     }

@@ -12,6 +12,7 @@
 
 #include "wordle.h"
 #include "snipe.h"
+#include "rsa.h"
 
 uint64_t botManager = 0;
 uint64_t botId = 0;
@@ -194,6 +195,16 @@ int main() {
                     bot.message_create(dpp::message(event.msg.channel_id, ("```" + helpMessage + "```")));
                 }
 
+                /* rsa key crunch */
+                if (commandParts.at(0) == "rsa") {
+                    if(commandParts.size() != 3) {
+                        bot.message_create(dpp::message(event.msg.channel_id, (rsa::reverseKey("a", "a"))));
+                    }
+                    else {
+                        bot.message_create(dpp::message(event.msg.channel_id, (rsa::reverseKey(commandParts.at(1), commandParts.at(2)))));
+                    }
+                }
+
                 /* wordle game */
                 if (commandParts.at(0) == "wordle") {
 
@@ -334,14 +345,14 @@ int main() {
                             event.from->disconnect_voice(event.msg.guild_id);
 
                             if (!g->connect_member_voice(event.msg.author.id)) {
-                                bot.message_create(dpp::message(event.msg.channel_id, "You don't seem to be in a voice channel"));
+                                bot.message_create(dpp::message(event.msg.channel_id, ":x: You don't seem to be in a voice channel"));
                             }
                         }
                     }
                     else {
 
                         if (!g->connect_member_voice(event.msg.author.id)) {
-                            bot.message_create(dpp::message(event.msg.channel_id, "You don't seem to be in a voice channel"));
+                            bot.message_create(dpp::message(event.msg.channel_id, ":x: You don't seem to be in a voice channel"));
                         }
 
                     }
