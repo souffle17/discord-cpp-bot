@@ -10,7 +10,6 @@ set_target_properties(${PROJECT_NAME} PROPERTIES LINKER_LANGUAGE CXX)
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
 include(CPack)
-include(FindPackageHandleStandardArgs)
 
 # dependencies
 # adapted from https://dpp.dev/buildcmake.html
@@ -24,11 +23,6 @@ find_library(DPP_LIBRARIES NAMES dpp "libdpp.a" HINTS ${DPP_ROOT_DIR})
 find_library(OGG_LIBRARIES NAMES libogg "libogg.so" HINTS ${OGG_ROOT_DIR})
 find_library(OPUS_LIBRARIES NAMES libopus0 "libopus.so" HINTS ${OPUS_ROOT_DIR})
 find_library(OPUSFILE_LIBRARIES NAMES libopusfile0 "libopusfile.so" HINTS ${OPUSFILE_ROOT_DIR})
- 
-find_package_handle_standard_args(DPP DEFAULT_MSG DPP_LIBRARIES DPP_INCLUDE_DIR)
-find_package_handle_standard_args(OGG DEFAULT_MSG OGG_LIBRARIES OGG_INCLUDE_DIR)
-find_package_handle_standard_args(OGG DEFAULT_MSG OGG_LIBRARIES OGG_INCLUDE_DIR)
-find_package_handle_standard_args(OGG DEFAULT_MSG OGG_LIBRARIES OGG_INCLUDE_DIR)
 
 target_link_libraries(${PROJECT_NAME} 
     ${DPP_LIBRARIES}
