@@ -134,4 +134,31 @@ namespace rsa {
             return ":x: Bad input";
         }
     }
+
+    std::string decrypt (std::vector<std::string> message, std::string m, std::string e) {
+        try {
+            mpz_class modulus = mpz_class(m);
+            mpz_class exponent = mpz_class(e);
+
+            std::string out = "";
+
+            std::vector<mpz_class> processing;
+
+            mpz_class encrypted;
+            mpz_class decrypted;
+
+            for(int i = 4; i < message.size(); i++) {
+                encrypted = mpz_class(message.at(i));
+
+                decrypted = bigPow(encrypted, exponent) % modulus;
+
+                out += char(std::stoi(decrypted.get_str()));
+            }
+            return "Message: " + out;
+        }
+        catch (const std::exception& e) {
+            std::cout << e.what();
+            return ":x: Bad input";
+        }
+    }
 }

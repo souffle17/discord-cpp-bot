@@ -9,3 +9,4 @@
 
 'rsa reverse [mod] [exponent]' - try and manually crunch small keys
 'rsa encrypt [mod] [exponent] [message]' - encrypt a message
+'rsa encrypt [mod] [exponent] [message]' - decrypt a message

@@ -218,6 +218,15 @@ int main() {
                                 ) ));
                             }
                         }
+
+                        if(commandParts.at(1) == "decrypt") {
+                            if(commandParts.size() < 5) {
+                                bot.message_create(dpp::message(event.msg.channel_id, (":x: Bad input")));
+                            }
+                            else {
+                                bot.message_create(dpp::message(event.msg.channel_id, ( rsa::decrypt(commandParts, commandParts.at(2), commandParts.at(3)))));
+                            }
+                        }
                     }
                 }
 
