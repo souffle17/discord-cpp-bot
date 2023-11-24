@@ -195,13 +195,29 @@ int main() {
                     bot.message_create(dpp::message(event.msg.channel_id, ("```" + helpMessage + "```")));
                 }
 
-                /* rsa key crunch */
                 if (commandParts.at(0) == "rsa") {
-                    if(commandParts.size() != 3) {
-                        bot.message_create(dpp::message(event.msg.channel_id, (rsa::reverseKey("a", "a"))));
-                    }
-                    else {
-                        bot.message_create(dpp::message(event.msg.channel_id, (rsa::reverseKey(commandParts.at(1), commandParts.at(2)))));
+                    if(commandParts.size() > 1) {
+
+                        /* rsa key crunch */
+                        if(commandParts.at(1) == "reverse") {
+                            if(commandParts.size() != 4) {
+                                bot.message_create(dpp::message(event.msg.channel_id, (rsa::reverseKey("a", "a"))));
+                            }
+                            else {
+                                bot.message_create(dpp::message(event.msg.channel_id, (rsa::reverseKey(commandParts.at(1), commandParts.at(2)))));
+                            }
+                        }
+
+                        if(commandParts.at(1) == "encrypt") {
+                            if(commandParts.size() < 5) {
+                                bot.message_create(dpp::message(event.msg.channel_id, (":x: Bad input")));
+                            }
+                            else {
+                                bot.message_create(dpp::message(event.msg.channel_id, ( rsa::encrypt(event.msg.content.substr(15 + commandParts.at(2).length() + commandParts.at(3).length(), 
+                                    event.msg.content.length() - 15 + commandParts.at(2).length() + commandParts.at(3).length()), commandParts.at(2), commandParts.at(3))
+                                ) ));
+                            }
+                        }
                     }
                 }
 

@@ -1,48 +1,53 @@
 #include <string>
 #include <numeric>
 #include <chrono>
+#include <gmpxx.h>
 
-void euclid (long long a, long long b, long long &x, long long &y){
+#include <iostream>
+
+// https://en.wikipedia.org/wiki/RSA_(cryptosystem)
+
+void euclid (mpz_class a, mpz_class b, mpz_class &x, mpz_class &y){
 	if(a == 0) {
         x = 1;
         y = 0;
     }
     else {
         euclid (b % a, a, x, y);
-        long long oldY = y;
+        mpz_class oldY = y;
         y = x - (b / a) * y;
         x = oldY;
     }
 }
 
+mpz_class bigPow (mpz_class a, mpz_class b) {
+    mpz_class out = 1;
+    for(mpz_class i = 0; i < b; i++) {
+        out *= a;
+    }
+    return out;
+}
+
 namespace rsa {
     std::string reverseKey (std::string pk, std::string pe) {
         try {
-            /* make sure it's a number */
-            for (int i = 0; i < pk.length(); i++) {
-                if(isdigit(pk.at(i)) == 0) {
-                    return ":x: Not a valid key";
-                }
-            }
-            for (int i = 0; i < pe.length(); i++) {
-                if(isdigit(pe.at(i)) == 0) {
-                    return ":x: Not a valid key";
-                }
-            }
+            mpz_class n;
+            mpz_class e;
 
-            /* make sure it's not too long */
-            if(pk.length() > 18) {
-                return ":x: That will take too long";
+            try {
+                n = pk;
+                e = pe;
+            }
+            catch (const std::exception& error) {
+                std::cout << error.what();
+                return ":x: Not a valid key";
             }
 
-            long long n = std::stoll(pk);
-            long long e = std::stoll(pe);
-
-            /* make sure n isnt too small */
-            if(n < 2) {return ":x: Not a valid key";}
+            /* make sure n and e arent too small */
+            if(n < 2 || e < 1) {return ":x: Not a valid key";}
 
             /* make sure e is prime */
-            for(long long i = 2; i < e/2; i++) {
+            for(mpz_class i = 2; i < e/2 + 1; i++) {
                 if (e % i == 0) {
                     return ":x: Not a valid key";
                 }
@@ -50,45 +55,83 @@ namespace rsa {
 
             auto startTime = std::chrono::system_clock::now();
 
-            long long p = 2;
-            long long q;
+            mpz_class p = 2;
+            mpz_class q = 0;
 
-            long long max = n / p;
+            mpz_class max = n / 2;
 
+            mpz_class maxLimit = mpz_class("10000000000000000000");
+
+
+            if(maxLimit < n / 2) 
+                max = maxLimit;
             if(n % 2 == 1) {
-                for(long long i = 3; i < max; i+=2) {
+                for(mpz_class i = 3; i < max; i+=2) {
                     if (n % i == 0) {
                         if(p == 2) {
                             /* store the multiple */
                             p = i;
-                            max = n / p;
                         }
                         else {
                             return ":x: Not a valid key";
                         }
                     }
                 }
+                if(p == 2) {
+                    if(max == maxLimit)
+                        return ":x: That will take too long";
+                        
+                    return ":x: Not a valid key";
+                }
             }
             q = n / p;
             
 
-            long long lcm = (p - 1) * ((q - 1) / std::gcd<int64_t>(p - 1, q - 1));
+            mpz_class totient = lcm((p - 1), (q - 1));
 
             /* make sure modular multiplicative inverse can be taken */
-            if(e < 2 || e > lcm || lcm % e == 0) {return ":x: Not a valid key";}
+            if(e < 2 || e > totient || totient % e == 0) {return ":x: Not a valid key";}
 
-            long long x, y;
-            euclid(e, lcm, x, y);
+            mpz_class x, y;
+            euclid(e, totient, x, y);
 
-            long long privateKey = (y + lcm) % lcm;
+            mpz_class privateKey = (y + totient) % totient;
 
-            auto endTime = std::chrono::system_clock::now();
-            std::chrono::duration<double> elapsed_seconds = endTime - startTime;
+            std::chrono::duration<double> elapsed_seconds = std::chrono::system_clock::now() - startTime;
 
-            return std::to_string(privateKey) + "\nTook " + std::to_string(elapsed_seconds.count()) + " seconds";
+            return privateKey.get_str() + "\nTook " + std::to_string(elapsed_seconds.count()) + " seconds";
         }
         catch (const std::exception& e) {
+            std::cout << e.what();
             return ":x: Not a valid key";
+        }
+    }
+
+    std::string encrypt (std::string message, std::string m, std::string e) {
+        try {
+            mpz_class modulus = mpz_class(m);
+            mpz_class exponent = mpz_class(e);
+
+            std::vector<mpz_class> processing;
+
+            for(int i = 0; i < message.length(); i++) {
+                mpz_class character = (int) message.at(i);
+
+                mpz_class output = bigPow(character, exponent) % modulus;
+                processing.push_back(output);
+            }
+
+            std::string out = "";
+
+            for(int i = 0; i < processing.size(); i++) {
+                out += processing.at(i).get_str() + " ";
+            }
+            
+            return out.substr(0, out.length()-1);
+        }
+        catch (const std::exception& e) {
+            std::cout << e.what();
+            return ":x: Bad input";
         }
     }
 }

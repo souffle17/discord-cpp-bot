@@ -18,17 +18,23 @@ find_path(DPP_INCLUDE_DIR NAMES dpp/dpp.h HINTS ${DPP_ROOT_DIR})
 find_path(OGG_INCLUDE_DIR NAMES ogg/ogg.h HINTS ${OGG_ROOT_DIR})
 find_path(OPUS_INCLUDE_DIR NAMES opus/opus.h HINTS ${OPUS_ROOT_DIR})
 find_path(OPUSFILE_INCLUDE_DIR NAMES opus/opusfile.h HINTS ${OPUSFILE_ROOT_DIR})
+find_path(GMP_INCLUDE_DIR NAMES gmp.h HINTS ${GMP_ROOT_DIR})
+find_path(GMPXX_INCLUDE_DIR NAMES gmpxx.h HINTS ${GMPXX_ROOT_DIR})
 	 
 find_library(DPP_LIBRARIES NAMES dpp "libdpp.a" HINTS ${DPP_ROOT_DIR})
 find_library(OGG_LIBRARIES NAMES libogg "libogg.so" HINTS ${OGG_ROOT_DIR})
 find_library(OPUS_LIBRARIES NAMES libopus0 "libopus.so" HINTS ${OPUS_ROOT_DIR})
 find_library(OPUSFILE_LIBRARIES NAMES libopusfile0 "libopusfile.so" HINTS ${OPUSFILE_ROOT_DIR})
+find_library(GMP_LIBRARIES NAMES libgmp "libgmp.so" HINTS ${GMP_ROOT_DIR})
+find_library(GMPXX_LIBRARIES NAMES libgmpxx "libgmpxx.so" HINTS ${GMPXX_ROOT_DIR})
 
 target_link_libraries(${PROJECT_NAME} 
     ${DPP_LIBRARIES}
     ${OGG_LIBRARIES}
     ${OPUS_LIBRARIES}
     ${OPUSFILE_LIBRARIES}
+    ${GMP_LIBRARIES}
+    ${GMPXX_LIBRARIES}
 )
 
 # include
@@ -39,6 +45,8 @@ target_include_directories(${PROJECT_NAME} PRIVATE
     ${OPUS_INCLUDE_DIR}
     ${OPUSFILE_INCLUDE_DIR}
     ${OPUSFILE_INCLUDE_DIR}/opus
+    ${GMP_INCLUDE_DIR}
+    ${GMPXX_INCLUDE_DIR}
     src/include
 )
 

@@ -7,4 +7,5 @@
 'play [query]' - play an audio file, with an optional query
 'stop' - stop audio
 
-'rsa [key] [exponent]' - try and manually crunch small keys
+'rsa reverse [mod] [exponent]' - try and manually crunch small keys
+'rsa encrypt [mod] [exponent] [message]' - encrypt a message
