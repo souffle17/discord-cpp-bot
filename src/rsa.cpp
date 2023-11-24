@@ -68,13 +68,9 @@ namespace rsa {
             if(n % 2 == 1) {
                 for(mpz_class i = 3; i < max; i+=2) {
                     if (n % i == 0) {
-                        if(p == 2) {
-                            /* store the multiple */
-                            p = i;
-                        }
-                        else {
-                            return ":x: Not a valid key";
-                        }
+                        /* store the multiple */
+                        p = i;
+                        break;
                     }
                 }
                 if(p == 2) {

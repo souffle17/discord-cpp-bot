@@ -204,7 +204,7 @@ int main() {
                                 bot.message_create(dpp::message(event.msg.channel_id, (rsa::reverseKey("a", "a"))));
                             }
                             else {
-                                bot.message_create(dpp::message(event.msg.channel_id, (rsa::reverseKey(commandParts.at(1), commandParts.at(2)))));
+                                bot.message_create(dpp::message(event.msg.channel_id, (rsa::reverseKey(commandParts.at(2), commandParts.at(3)))));
                             }
                         }
 
