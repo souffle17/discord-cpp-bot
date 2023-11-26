@@ -170,6 +170,9 @@ int main() {
 
     bot.on_message_create([&bot](const dpp::message_create_t& event) {
         try {
+            //cache message
+            snipe::messageAdd(event.msg, cache);
+
             std::cout << "[MESSAGE] in " << size_t(event.msg.channel_id) << " from " << event.msg.author.username << " (" << event.msg.author.id << "): " << event.msg.content << std::endl;
             
             //command prefix
@@ -419,7 +422,7 @@ int main() {
                             }
                         }
                     }
-                    if(thefilename.length() > 0) {
+                    if(thefilename.length() != 0) {
                         /* Below is from https://dpp.dev/oggopus.html*/
 
                         dpp::voiceconn* v = event.from->get_voice(event.msg.guild_id);
