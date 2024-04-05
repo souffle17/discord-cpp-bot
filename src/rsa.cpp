@@ -108,6 +108,10 @@ namespace rsa {
             mpz_class modulus = mpz_class(m);
             mpz_class exponent = mpz_class(e);
 
+            if(m.length() > 19 || e.length() > 19) {
+                return ":x: That will take too long";
+            }
+
             std::vector<mpz_class> processing;
 
             for(int i = 0; i < message.length(); i++) {
@@ -135,6 +139,10 @@ namespace rsa {
         try {
             mpz_class modulus = mpz_class(m);
             mpz_class exponent = mpz_class(e);
+
+            if(m.length() > 19 || e.length() > 19) {
+                return ":x: That will take too long";
+            }
 
             std::string out = "";
 
