@@ -549,7 +549,7 @@ int main() {
                 /* debug/admin commands */
                 if (size_t(event.msg.author.id) == botManager && size_t(event.msg.channel_id) == botDebugChannel) {
                     /* load in the audio files */
-                    if (event.msg.content == "fileloadin") {
+                    if (event.msg.content.substr(1) == "fileloadin") {
                         std::string fileNameInput;
                         for (const auto& entry : std::filesystem::directory_iterator("dependencies/audio")) {
                             fileNameInput = entry.path().string();
@@ -566,12 +566,12 @@ int main() {
                         bot.message_create(dpp::message(channelId, msg));
                     }
 
-                    if (event.msg.content == "set snipe cutoff") {
+                    if (event.msg.content.substr(1) == "set snipe cutoff") {
                         snipeCutOff = event.msg.id;
                         bot.message_create(dpp::message(botDebugChannel, ("Snipe cutoff set")));
                     }
                     
-                    if (event.msg.content == "kill bot") {
+                    if (event.msg.content.substr(1) == "kill bot") {
                         bot.message_create(dpp::message(event.msg.channel_id, ("Killing bot")));
                         dpp::guild* g = dpp::find_guild(-1);
                         
